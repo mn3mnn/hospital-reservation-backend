@@ -8,6 +8,13 @@ class TimeSchedule(BaseSchemaModel):
     start_time: time
     end_time: time
 
+    class Config:
+        json_encoders = {
+            time: lambda v: v.strftime('%H:%M:%S')  # Convert time to string
+        }
+
+
+
 class DoctorSchedule(BaseSchemaModel):
     monday: Optional[TimeSchedule] = None
     tuesday: Optional[TimeSchedule] = None
@@ -16,6 +23,13 @@ class DoctorSchedule(BaseSchemaModel):
     friday: Optional[TimeSchedule] = None
     saturday: Optional[TimeSchedule] = None
     sunday: Optional[TimeSchedule] = None
+
+    class Config:
+        json_encoders = {
+            time: lambda v: v.strftime('%H:%M:%S')  # Convert time to string
+        }
+
+
 
 
 class DoctorOut(BaseSchemaModel):
@@ -27,8 +41,13 @@ class DoctorBranchIn(BaseSchemaModel):
     branch_id: int
     schedule: DoctorSchedule
 
-class DoctorBranchOut(BaseSchemaModel):
-    doctor_id: int
+    class Config:
+        json_encoders = {
+            time: lambda v: v.strftime('%H:%M:%S')  # Convert time to string
+        }
+
+
+class DoctorScheduleOut(BaseSchemaModel):
     branch_id: int
     schedule: DoctorSchedule
 
@@ -36,8 +55,8 @@ class DoctorIn(BaseSchemaModel):
     first_name: str = Field(...)
     last_name: str = Field(...)
     email: str = Field(...)
-    password: str = Field(...)
-    phone_number: str = Field(...)
+    # password: str = Field(...)
+    phone: str = Field(...)
 
     doctor_branches: List[DoctorBranchIn] = Field(...)
 

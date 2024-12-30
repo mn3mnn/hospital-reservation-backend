@@ -25,3 +25,14 @@ class ReservationIn(BaseSchemaModel):
     time: str = Field(...)
 
     has_shock_therapy: bool = Field(...)
+
+class SessionTypeOut(BaseSchemaModel):
+    id: int
+    name: str
+    description: str
+    price: int
+
+class SessionTypeIn(BaseSchemaModel):
+    name: str
+    description: str
+    price: int

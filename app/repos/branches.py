@@ -10,7 +10,7 @@ class BranchRepository(BaseRepository):
         stmt = select(Branch)
         result = await self.db.execute(stmt)
         branches = result.scalars().all()
-        return [BranchOut.model_validate(branch) for branch in branches]
+        return [BranchOut(**branch.__dict__) for branch in branches]
 
     async def get_branch_by_id(self, branch_id: int) -> Optional[BranchOut]:
         branch = await self.get_by_id(Branch, branch_id)

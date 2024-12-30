@@ -1,6 +1,6 @@
 from typing import List, Sequence
 
-from app.models.schemas.reservations import ReservationIn, ReservationOut
+from app.models.schemas.reservations import ReservationIn, ReservationOut, SessionTypeOut, SessionTypeIn
 from app.repos.reservations import ReservationRepository
 
 class ReservationService:
@@ -17,7 +17,7 @@ class ReservationService:
 
     async def create_reservation(self, reservation: ReservationIn) -> ReservationOut:
         created_reservation = await self.repo.create_reservation(reservation)
-        return ReservationOut.model_validate(created_reservation)
+        return ReservationOut(**created_reservation.__dict__)
 
     async def update_reservation(self, reservation_id: int, reservation: ReservationIn) -> ReservationOut:
         updated_reservation = await self.repo.update_reservation(reservation_id, reservation)
@@ -28,3 +28,11 @@ class ReservationService:
 
     async def confirm_reservation(self, reservation_id: int) -> None:
         await self.repo.confirm_reservation(reservation_id)
+
+    async def get_sessions(self) -> List[SessionTypeOut]:
+        sessions = await self.repo.get_sessions()
+        return [SessionTypeOut.model_validate(s) for s in sessions]
+
+    async def create_session(self, session: SessionTypeIn) -> SessionTypeOut:
+        created_session = await self.repo.create_session(session)
+        return SessionTypeOut(**created_session.__dict__)

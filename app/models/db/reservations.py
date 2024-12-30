@@ -17,8 +17,9 @@ class Reservation(SQLBase):
     __table_args__ = {"schema": "public"}
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(String, nullable=False)
-    status = Column(String, nullable=False)
+    week_day = Column(String, nullable=False)
+    time = Column(String, nullable=False)
+    status = Column(String, nullable=False, default="pending")
     has_shock_therapy = Column(Boolean, nullable=False)
 
     doctor_id = Column(Integer, ForeignKey("public.doctors.id"), nullable=False)

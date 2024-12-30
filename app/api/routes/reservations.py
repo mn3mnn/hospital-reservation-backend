@@ -1,6 +1,8 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 from app.services.reservations import ReservationService
-from app.models.schemas.reservations import ReservationIn, ReservationOut
+from app.models.schemas.reservations import ReservationIn, ReservationOut, SessionTypeOut, SessionTypeIn
 from app.core.dependencies import get_reservation_service
 
 router = APIRouter(prefix="/reservations", tags=["reservations"])
@@ -11,6 +13,23 @@ async def get_reservations(service: ReservationService = Depends(get_reservation
     Get all reservations
     """
     return await service.get_reservations()
+
+
+@router.get("/sessions", response_model=List[SessionTypeOut])
+async def get_sessions(service: ReservationService = Depends(get_reservation_service)):
+    """
+    Get all reservations
+    """
+    return await service.get_sessions()
+
+@router.post("/sessions", response_model=SessionTypeOut)
+async def create_session(session: SessionTypeIn, service: ReservationService = Depends(get_reservation_service)):
+    """
+    Get all reservations
+    """
+    return await service.create_session(session)
+
+
 
 @router.get("/{reservation_id}", response_model=ReservationOut)
 async def get_reservation_by_id(reservation_id: int, service: ReservationService = Depends(get_reservation_service)):
@@ -46,3 +65,4 @@ async def confirm_reservation(reservation_id: int, service: ReservationService =
     confirm a new reservation
     """
     return await service.confirm_reservation(reservation_id)
+
